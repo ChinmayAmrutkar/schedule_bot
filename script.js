@@ -1,7 +1,7 @@
 // script.js
 
 // IMPORTANT: Replace this URL with your deployed Google Cloud Function's URL
-const backendUrl = 'https://process-schedule-request-725064701138.us-west1.run.app';
+const backendUrl = 'https://process-schedule-request-725064701138.us-west1.run.app/';
 
 const userInput = document.getElementById('userInput');
 const sendBtn = document.getElementById('sendBtn');
@@ -68,3 +68,4 @@ userInput.addEventListener('keypress', (event) => {
         sendMessage();
     }
 });
+
