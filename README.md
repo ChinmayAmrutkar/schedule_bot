@@ -1,189 +1,102 @@
-<p align="center"><h1 align="center">SCHEDULE_BOT</h1></p>
-<p align="center">
-	<em><code>❯ REPLACE-ME</code></em>
-</p>
-<p align="center">
-	<img src="https://img.shields.io/github/license/ChinmayAmrutkar/schedule_bot?style=default&logo=opensourceinitiative&logoColor=white&color=0080ff" alt="license">
-	<img src="https://img.shields.io/github/last-commit/ChinmayAmrutkar/schedule_bot?style=default&logo=git&logoColor=white&color=0080ff" alt="last-commit">
-	<img src="https://img.shields.io/github/languages/top/ChinmayAmrutkar/schedule_bot?style=default&color=0080ff" alt="repo-top-language">
-	<img src="https://img.shields.io/github/languages/count/ChinmayAmrutkar/schedule_bot?style=default&color=0080ff" alt="repo-language-count">
-</p>
-<p align="center"><!-- default option, no dependency badges. -->
-</p>
-<p align="center">
-	<!-- default option, no dependency badges. -->
-</p>
-<br>
+# AI Scheduling Assistant for Google Calendar
 
-##  Table of Contents
+This project is a full-stack, AI-powered chatbot that acts as a personal scheduling assistant. It allows users to manage their Google Calendar through a simple, conversational web interface, translating natural language commands into specific calendar actions.
 
-- [ Overview](#-overview)
-- [ Features](#-features)
-- [ Project Structure](#-project-structure)
-  - [ Project Index](#-project-index)
-- [ Getting Started](#-getting-started)
-  - [ Prerequisites](#-prerequisites)
-  - [ Installation](#-installation)
-  - [ Usage](#-usage)
-  - [ Testing](#-testing)
-- [ Project Roadmap](#-project-roadmap)
-- [ Contributing](#-contributing)
-- [ License](#-license)
-- [ Acknowledgments](#-acknowledgments)
+The application leverages the power of the Google Gemini API to understand complex, multi-event requests and integrates directly with the Google Calendar API to perform actions in real-time.
 
----
+## ✨ Features
 
-##  Overview
+* **Natural Language Processing:** Add, delete, and list calendar events using everyday language.
+* **Complex Parsing:** Can process an entire week's schedule from a single block of text and add each event individually.
+* **Multi-Functionality:** Supports creating, deleting, and listing events with contextual understanding.
+* **Direct Google Calendar Integration:** All actions are reflected immediately in the user's specified Google Calendar.
+* **Modern Chat Interface:** A clean, responsive, and user-friendly chat UI for seamless interaction.
 
-<code>❯ REPLACE-ME</code>
+## 🛠️ Tech Stack
 
----
+* **Frontend:** HTML5, CSS3, Vanilla JavaScript
+* **Backend:** Python, Google Cloud Functions (2nd Gen, running on Cloud Run)
+* **AI & APIs:**
+    * **Google Gemini API:** For state-of-the-art natural language understanding and JSON generation.
+    * **Google Calendar API:** For creating, managing, and reading calendar events.
+* **Platform & Tools:**
+    * **Google Cloud Platform:** For hosting the serverless backend, managing authentication, and logging.
+    * **Google Cloud IAM:** For secure service account management.
+    * **GitHub Pages:** For hosting the static frontend.
 
-##  Features
+## 🚀 Setup and Deployment Guide
 
-<code>❯ REPLACE-ME</code>
+Follow these steps to deploy your own instance of the AI Scheduling Assistant.
 
----
+### Prerequisites
 
-##  Project Structure
+* A Google Cloud Project with billing enabled.
+* The `gcloud` command-line tool installed and configured.
+* Python 3.9+ installed locally.
+* A personal Google Calendar you want to manage.
 
-```sh
-└── schedule_bot/
-    ├── index.html
-    ├── main.py
-    ├── script.js
-    └── style.css
-```
+### 1. Backend Setup
 
+1.  **Enable APIs:** In your Google Cloud project, enable the **Google Calendar API** and the **Vertex AI API** (which provides access to Gemini).
+2.  **Create a Service Account:**
+    * Navigate to **IAM & Admin > Service Accounts**.
+    * Create a new service account (e.g., `schedule-bot-account`).
+    * Generate a **JSON key** for this service account and download it. Rename this file to `credentials.json`.
+3.  **Share Your Calendar:**
+    * Open your `credentials.json` file and copy the `client_email`.
+    * Go to your Google Calendar settings and find the specific calendar you want to use.
+    * Under "Share with specific people or groups," add the `client_email` and give it **"Make changes to events"** permission.
+4.  **Prepare Backend Code:**
+    * Place your `main.py` and `credentials.json` files in a new directory.
+    * Create a file named `requirements.txt` in the same directory with the following content:
+        ```
+        google-api-python-client
+        google-auth-httplib2
+        google-auth-oauthlib
+        google-generativeai
+        Flask
+        ```
+5.  **Deploy to Google Cloud:**
+    * Open your terminal or the Google Cloud Shell and navigate to your backend directory.
+    * Run the following command to deploy the function. Remember to set your Gemini API key as an environment variable.
+        ```
+        gcloud functions deploy process-schedule-request \
+          --gen2 \
+          --runtime=python311 \
+          --region=us-west1 \
+          --source=. \
+          --entry-point=process_schedule_request \
+          --trigger-http \
+          --allow-unauthenticated \
+          --set-env-vars=GEMINI_API_KEY=YOUR_GEMINI_API_KEY
+        ```
+    * After deployment, copy the **HTTPS Trigger URL**. This is your backend endpoint.
 
-###  Project Index
-<details open>
-	<summary><b><code>SCHEDULE_BOT/</code></b></summary>
-	<details> <!-- __root__ Submodule -->
-		<summary><b>__root__</b></summary>
-		<blockquote>
-			<table>
-			<tr>
-				<td><b><a href='https://github.com/ChinmayAmrutkar/schedule_bot/blob/master/style.css'>style.css</a></b></td>
-				<td><code>❯ REPLACE-ME</code></td>
-			</tr>
-			<tr>
-				<td><b><a href='https://github.com/ChinmayAmrutkar/schedule_bot/blob/master/main.py'>main.py</a></b></td>
-				<td><code>❯ REPLACE-ME</code></td>
-			</tr>
-			<tr>
-				<td><b><a href='https://github.com/ChinmayAmrutkar/schedule_bot/blob/master/script.js'>script.js</a></b></td>
-				<td><code>❯ REPLACE-ME</code></td>
-			</tr>
-			<tr>
-				<td><b><a href='https://github.com/ChinmayAmrutkar/schedule_bot/blob/master/index.html'>index.html</a></b></td>
-				<td><code>❯ REPLACE-ME</code></td>
-			</tr>
-			</table>
-		</blockquote>
-	</details>
-</details>
+### 2. Frontend Setup
 
----
-##  Getting Started
+1.  **Configure the URL:**
+    * Open the `script.js` file.
+    * Find the `backendUrl` constant and paste the Trigger URL you copied from the backend deployment.
+2.  **Deploy Frontend:**
+    * Host the frontend files (`index.html`, `style.css`, `script.js`) on any static hosting provider, such as GitHub Pages or Netlify.
 
-###  Prerequisites
+## 💬 How to Use
 
-Before getting started with schedule_bot, ensure your runtime environment meets the following requirements:
+Interact with the bot using natural language. Here are some examples:
 
-- **Programming Language:** CSS
+* **To add a single event:**
+    > `Schedule a team meeting tomorrow at 3 PM for one hour.`
+* **To list events:**
+    > `What's on my schedule for today?`
+* **To delete an event:**
+    > `Delete the 10am project sync on Monday.`
+* **To add an entire week's schedule:**
+    > `Add my schedule for the week: - Monday: Gym from 6 PM to 7 PM. - Tuesday: Dentist appointment at 10 AM. - Wednesday: Lunch with Alex from 1 PM to 2 PM.`
 
+## 🧠 Project Evolution & Key Learnings
 
-###  Installation
+This project evolved significantly from a simple script to a multi-functional AI assistant. The key challenges and learning experiences were:
 
-Install schedule_bot using one of the following methods:
-
-**Build from source:**
-
-1. Clone the schedule_bot repository:
-```sh
-❯ git clone https://github.com/ChinmayAmrutkar/schedule_bot
-```
-
-2. Navigate to the project directory:
-```sh
-❯ cd schedule_bot
-```
-
-3. Install the project dependencies:
-
-echo 'INSERT-INSTALL-COMMAND-HERE'
-
-
-
-###  Usage
-Run schedule_bot using the following command:
-echo 'INSERT-RUN-COMMAND-HERE'
-
-###  Testing
-Run the test suite using the following command:
-echo 'INSERT-TEST-COMMAND-HERE'
-
----
-##  Project Roadmap
-
-- [X] **`Task 1`**: <strike>Implement feature one.</strike>
-- [ ] **`Task 2`**: Implement feature two.
-- [ ] **`Task 3`**: Implement feature three.
-
----
-
-##  Contributing
-
-- **💬 [Join the Discussions](https://github.com/ChinmayAmrutkar/schedule_bot/discussions)**: Share your insights, provide feedback, or ask questions.
-- **🐛 [Report Issues](https://github.com/ChinmayAmrutkar/schedule_bot/issues)**: Submit bugs found or log feature requests for the `schedule_bot` project.
-- **💡 [Submit Pull Requests](https://github.com/ChinmayAmrutkar/schedule_bot/blob/main/CONTRIBUTING.md)**: Review open PRs, and submit your own PRs.
-
-<details closed>
-<summary>Contributing Guidelines</summary>
-
-1. **Fork the Repository**: Start by forking the project repository to your github account.
-2. **Clone Locally**: Clone the forked repository to your local machine using a git client.
-   ```sh
-   git clone https://github.com/ChinmayAmrutkar/schedule_bot
-   ```
-3. **Create a New Branch**: Always work on a new branch, giving it a descriptive name.
-   ```sh
-   git checkout -b new-feature-x
-   ```
-4. **Make Your Changes**: Develop and test your changes locally.
-5. **Commit Your Changes**: Commit with a clear message describing your updates.
-   ```sh
-   git commit -m 'Implemented new feature x.'
-   ```
-6. **Push to github**: Push the changes to your forked repository.
-   ```sh
-   git push origin new-feature-x
-   ```
-7. **Submit a Pull Request**: Create a PR against the original project repository. Clearly describe the changes and their motivations.
-8. **Review**: Once your PR is reviewed and approved, it will be merged into the main branch. Congratulations on your contribution!
-</details>
-
-<details closed>
-<summary>Contributor Graph</summary>
-<br>
-<p align="left">
-   <a href="https://github.com{/ChinmayAmrutkar/schedule_bot/}graphs/contributors">
-      <img src="https://contrib.rocks/image?repo=ChinmayAmrutkar/schedule_bot">
-   </a>
-</p>
-</details>
-
----
-
-##  License
-
-This project is protected under the [SELECT-A-LICENSE](https://choosealicense.com/licenses) License. For more details, refer to the [LICENSE](https://choosealicense.com/licenses/) file.
-
----
-
-##  Acknowledgments
-
-- List any resources, contributors, inspiration, etc. here.
-
----
+* **Authentication:** Mastered the distinction between user-based OAuth and server-to-server authentication with Service Accounts, a critical concept for building backend applications that interact with Google services.
+* **Cloud Deployment & Debugging:** Gained hands-on experience deploying a serverless Python application and debugging a range of real-world HTTP errors (400, 404, 500) related to cloud permissions, IAM roles, and CORS policies.
+* **Advanced Prompt Engineering:** Learned to iteratively refine the prompt sent to the Gemini model, transforming it from a simple instruction-follower into a sophisticated parsing engine capable of classifying intent (add/delete/list) and handling complex, unstructured data with high accuracy.
